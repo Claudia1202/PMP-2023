@@ -31,3 +31,18 @@ plt.axvline(hdi[1], color='black', linestyle='--')
 plt.xlabel('Granita de decizie')
 plt.ylabel('Frecventa')
 plt.show()
+
+#3 + 4:
+
+data = {'GRE': 550, 'GPA': 3.5}
+p = np.exp(-(trace.posterior['beta0'] + trace.posterior['beta1'] * data['GRE'] + trace.posterior['beta2'] * data['GPA']))
+prob_post = 1 / (1+p)
+hdi__prob = pm.hdi(prob_post, hdi_prob=0.9)
+print(hdi__prob)
+
+
+dataa = {'GRE': 500, 'GPA': 3.2}
+pp = np.exp(-(trace.posterior['beta0'] + trace.posterior['beta1'] * dataa['GRE'] + trace.posterior['beta2'] * dataa['GPA']))
+prob__post = 1 / (1 + pp)
+hdi__prob2 = pm.hdi(prob__post, hdi_prob2=0.9)
+print(hdi__prob2)
