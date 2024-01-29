@@ -1,7 +1,9 @@
 import pandas as pd
 import pymc as pm
 import numpy as np
-
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
 
 ##ex1
 # a. setul de date
@@ -37,3 +39,30 @@ medv_hdi = pm.hdi(medv_pred, hdi_prob=0.5)
 print("Intervalul de predictie HDI:", medv_hdi)
 
 
+##2.
+
+def posterior_grid(grid_points=50, trials=5, success=1):
+  
+    grid = np.linspace(0, 1, grid_points)   #intervalul pt theta
+    apriori = np.repeat(1 / grid_points, grid_points)  #prob a priori
+    likelihood = stats.binom.pmf(success, trials, p=grid)  #verosim
+    posterior = likelihood *apriori  #verosim * prob a priori
+    posterior /= posterior.sum() 
+    return grid, posterior
+
+#parametrii
+success = 1  
+grid_points = 50 
+trials_values = [5, 10, 20]
+
+#grafic
+plt.figure(figsize=(12, 8))
+
+for trials in trials_values:
+    grid, posterior = posterior_grid(grid_points, trials, success)
+    plt.plot(grid, posterior, 'o-', label=f'Trials = {trials}')
+
+plt.title(f'Grafic')
+plt.xlabel('theta')
+plt.legend()
+plt.show()
